@@ -1,0 +1,38 @@
+LATTICE CREATION USING RELATIONAL MODEL
+
+LATTICE L1
+
+create table L1 as
+select artist_id as artist1, album_name, count(*) as count
+from artist_album_collaboration
+where popularity > 50
+group by artist
+having count(*) > 5;
+
+
+
+LATTICE L2
+
+create table L2 as
+select aac1.artist_id as artist1, aac2.artist_id as artist2, aac1.album_name, count(*) as count
+from artist_album_collaboration aac1
+join artist_album_collaboration aac2
+on aac1.album_id = aac2.album_id
+where artist1 < artist2
+and aac1.popularity > 50 and aac2.popularity > 50
+group by artist1, artist2
+having count(*) > 5;
+
+
+
+LATTICE L3
+
+create table L3 as
+select aac1.artist_id as artist1, aac2.artist_id as artist2,aac3.artist_id as artist3, aac1.album_name, count(*) as count
+from artist_album_collaboration aac1
+join artist_album_collaboration aac2 on aac1.album_id = aac2.album_id
+join artist_album_collaboration aac3 on aac2.album_id = aac3.album_id
+where artist1 < artist2 and artist2 < artist3
+and aac1.popularity > 50 and aac2.popularity > 50 and aac3.popularity > 50
+group by artist1, artist2, artist3
+having count(*) > 5;

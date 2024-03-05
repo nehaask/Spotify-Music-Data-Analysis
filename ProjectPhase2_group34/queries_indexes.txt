@@ -1,0 +1,109 @@
+1. Popularity of the album > 75 and artist should have 10k followers and tracks are non-explicit.
+
+select main.artists.name, main.artists.followers
+from artists
+join r_albums_artists raa on artists.id = raa.artist_id
+join albums a on raa.album_id = a.id
+join r_albums_tracks rat on a.id = rat.album_id
+join tracks t on rat.track_id = t.id
+where a.popularity > 75
+and artists.followers > 10000
+and t.explicit = 0;
+
+Using Indexing:
+CREATE INDEX idx_artists_id ON artists(id);
+CREATE INDEX idx_artists_followers ON artists(followers);
+CREATE INDEX idx_raa_artist_id ON r_albums_artists(artist_id);
+CREATE INDEX idx_albums_id ON albums(id);
+CREATE INDEX idx_albums_popularity ON albums(popularity);
+
+
+2. Longest  duration of tracks, whose genre name like %jazz%
+
+select main.tracks.name, max(main.tracks.duration)
+from tracks
+join main.r_track_artist on tracks.id = r_track_artist.track_id
+join main.r_artist_genre on r_track_artist.artist_id = r_artist_genre.artist_id
+where genre_id like '%jazz%';
+
+Using Indexing:
+CREATE INDEX tracks_id_idx ON tracks(id);
+CREATE INDEX r_track_artist_track_id_idx ON r_track_artist(track_id);
+CREATE INDEX r_track_artist_artist_id_idx ON r_track_artist(artist_id);
+CREATE INDEX r_artist_genre_artist_id_idx1 ON r_artist_genre(artist_id);
+CREATE INDEX r_artist_genre_genre_id_idx2 ON r_artist_genre(genre_id );
+
+
+3. Genres that have the most number of songs and sort by descending order and display only top 5, with the audio feature loudness
+
+SELECT main.genres.id, AVG(audio_features.loudness) as avg_loudness, COUNT(tracks.track_number) as num_songs
+FROM genres
+JOIN r_artist_genre ON genres.id = r_artist_genre.genre_id
+JOIN artists ON r_artist_genre.artist_id = artists.id
+JOIN r_albums_artists ON artists.id = r_albums_artists.artist_id
+JOIN albums ON r_albums_artists.album_id = albums.id
+JOIN r_albums_tracks ON albums.id = r_albums_tracks.album_id
+JOIN tracks ON r_albums_tracks.track_id = tracks.id
+JOIN audio_features ON tracks.id = audio_features.id
+GROUP BY genres.id
+ORDER BY num_songs DESC
+LIMIT 5;
+
+Using Indexing:
+CREATE INDEX genres_id_idx0 ON genres(id);
+CREATE INDEX r_artist_genre_genre_id_idx0 ON r_artist_genre(genre_id);
+CREATE INDEX r_artist_genre_artist_id_idx0 ON r_artist_genre(artist_id);
+CREATE INDEX artists_id_idx0 ON artists(id);
+CREATE INDEX r_albums_artists_artist_id_idx0 ON r_albums_artists(artist_id);
+CREATE INDEX r_albums_artists_album_id_idx0 ON r_albums_artists(album_id);
+CREATE INDEX albums_id_idx0 ON albums(id);
+CREATE INDEX r_albums_tracks_album_id_idx0 ON r_albums_tracks(album_id);
+CREATE INDEX r_albums_tracks_track_id_idx0 ON r_albums_tracks(track_id);
+CREATE INDEX tracks_id_idx0 ON tracks(id);
+CREATE INDEX audio_features_id_idx0 ON audio_features(id);
+CREATE INDEX audio_features_loudness_idx0 ON audio_features(loudness);
+
+
+4. Retrieve the names of all genres and the number of tracks associated with each genre, sorted by the number of tracks in descending order.
+
+SELECT genres.id, COUNT(*) as tracks
+FROM genres
+JOIN r_artist_genre ON genres.id = r_artist_genre.genre_id
+JOIN r_albums_artists ON r_artist_genre.artist_id = r_albums_artists.artist_id
+JOIN r_albums_tracks ON r_albums_artists.album_id = r_albums_tracks.album_id
+GROUP BY genres.id
+ORDER BY tracks DESC;
+
+Using Indexing:
+
+CREATE INDEX idx_r_artist_genre_genre_id ON r_artist_genre (genre_id);
+CREATE INDEX idx_r_artist_genre_artist_id ON r_artist_genre (artist_id);
+CREATE INDEX idx_r_albums_artists_artist_id ON r_albums_artists (artist_id);
+CREATE INDEX idx_r_albums_artists_album_id ON r_albums_artists (album_id);
+CREATE INDEX idx_r_albums_tracks_album_id ON r_albums_tracks (album_id);
+
+
+5. List the names of all tracks with a duration longer than 5 minutes, and their corresponding album, artist, and genre names.
+
+SELECT t.name AS track_name, a.name AS album_name, ar.name AS artist_name, g.id AS genre_name
+FROM tracks t
+JOIN r_albums_tracks rat ON t.id = rat.track_id
+JOIN albums a ON rat.album_id = a.id
+JOIN r_albums_artists raa ON a.id = raa.album_id
+JOIN artists ar ON raa.artist_id = ar.id
+JOIN r_artist_genre rag ON ar.id = rag.artist_id
+JOIN genres g ON rag.genre_id = g.id
+WHERE t.duration > 300000;
+
+Using Indexing:
+CREATE INDEX tracks_duration_idx ON tracks(duration);
+CREATE INDEX r_albums_tracks_track_id_idx ON r_albums_tracks(track_id);
+CREATE INDEX r_albums_tracks_album_id_idx ON r_albums_tracks(album_id);
+CREATE INDEX albums_id_idx ON albums(id);
+CREATE INDEX r_albums_artists_album_id_idx ON r_albums_artists(album_id);
+CREATE INDEX r_albums_artists_artist_id_idx ON r_albums_artists(artist_id);
+CREATE INDEX artists_id_idx ON artists(id);
+CREATE INDEX r_artist_genre_artist_id_idx ON r_artist_genre(artist_id);
+CREATE INDEX r_artist_genre_genre_id_idx ON r_artist_genre(genre_id);
+CREATE INDEX genres_id_idx ON genres(id);
+

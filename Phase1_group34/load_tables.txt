@@ -1,0 +1,16 @@
+PROGRAM TO LOAD THE TABLES
+
+TABLE ALBUMS
+\copy albums from '/Users/shreyasakpal/Desktop/Spotify/album.csv' with (FORMAT csv, null '\N');
+
+TABLE ARTISTS
+\copy artists from '/Users/shreyasakpal/Desktop/Spotify/artist.csv' with (FORMAT csv, null '\N');
+
+TABLE TRACKS
+\copy tracks from '/Users/shreyasakpal/Desktop/Spotify/tracks.csv' with (FORMAT csv, null '\N');
+
+TABLE AUDIO_FEATURES
+\copy audio_features from '/Users/shreyasakpal/Desktop/Spotify/audio_features.csv' with (FORMAT csv, null '\N'); 
+
+TABLE GENRES
+\copy genres from '/Users/shreyasakpal/Desktop/Spotify/genres.csv' with (FORMAT csv, null '\N');

@@ -1,0 +1,65 @@
+SQL QUERIES TO LOAD THE TABLES
+
+CREATE TABLE spotify.artists(
+    artist_id   varchar NOT NULL,
+    name   varchar,
+    popularity   int,
+    followers    int,
+    PRIMARY KEY(artist_id)
+);
+
+CREATE TABLE spotify.albums(
+    album_id varchar NOT NULL,
+    name varchar,
+    type varchar,
+    release_date int,
+    popularity int,
+    PRIMARY KEY (album_id)
+);
+
+CREATE TABLE spotify.audio_features(
+    audio_feature_id varchar NOT NULL,
+    acousticness decimal,
+    danceability decimal,
+    duration integer,
+    energy decimal,
+    instrumentalness decimal,
+    liveness decimal,
+    loudness decimal,
+    PRIMARY KEY (audio_feature_id)
+  );
+
+CREATE TABLE spotify.tracks(
+   track_id varchar NOT NULL,
+   name varchar,
+   feature_id varchar,
+   popularity integer,
+   track_num integer,
+   duration integer,
+   audio_feature_id varchar,
+   PRIMARY KEY (track_id)
+   FOREIGN KEY (audio_feature_id) references audio_features(audio_feature_id)
+);
+
+CREATE TABLE spotify.genres(
+    genre_names varchar,
+    genre_id integer,
+    PRIMARY KEY (genre_id)
+);
+
+CREATE TABLE spotify.albums_artists(
+    album_id varchar NOT NULL,
+    artist_id   varchar NOT NULL,
+    PRIMARY KEY (album_id, artist_id)
+    FOREIGN KEY (album_id) references albums(album_id)
+    FOREIGN KEY (artist_id) references artists(artist_id)
+);
+
+
+CREATE TABLE spotify.tracks_genres(
+    track_id varchar NOT NULL,
+    genre_id   varchar NOT NULL,
+    PRIMARY KEY (track_id, genre_id)
+    FOREIGN KEY (track_id) references tracks(track_id)
+    FOREIGN KEY (genre_id) references genres(genre_id)
+);

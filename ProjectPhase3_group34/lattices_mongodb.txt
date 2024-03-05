@@ -1,0 +1,51 @@
+LATTICE CREATION USING DATA-ORIENTED MODEL
+
+LATTICE L1
+
+db.artist_album_collaboration.aggregate([
+{ $match: { popularity: { $gt: 50 } } },
+{ $group: {
+_id: "$artist_id",
+album_name: { $first: "$album_name" },
+count: { $sum: 1 }
+} },
+{ $match: { count: { $gt: 5 } } },
+{ $project: {
+_id: 0,
+artist1: "$_id",
+album_name: 1,
+count: 1
+} },
+{ $out: "L1" }
+])
+
+
+LATTICE L2
+
+db.artist_album_collaboration.aggregate([
+{ $match: { popularity: { $gt: 50 } } },
+{ $lookup: {
+from: "artist_album_collaboration",
+localField: "album_id",
+foreignField: "album_id",
+as: "collaborators"
+} },
+{ $unwind: "$collaborators" },
+{ $match: {
+"collaborators.artist_id": { $gt: "$artist_id" },
+"collaborators.popularity": { $gt: 50 }
+} },
+{ $group: {
+_id: { artist1: "$artist_id", artist2: "$collaborators.artist_id", album_name: "$album_name" },
+count: { $sum: 1 }
+} },
+{ $match: { count: { $gt: 5 } } },
+{ $project: {
+_id: 0,
+artist1: "$_id.artist1",
+artist2: "$_id.artist2",
+album_name: "$_id.album_name",
+count: 1
+} },
+{ $out: "L2" }
+])

@@ -1,0 +1,230 @@
+1. Collection albums
+db.createCollection("albums", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "album_id", "name", "type", "release_date", "popularity" ],
+         properties: {
+            album_id: {
+               bsonType: "string"
+            },
+            name: {
+               bsonType: "string"
+            },
+            type: {
+               bsonType: "string"
+            },
+            release_date: {
+               bsonType: "int"
+            },
+            popularity: {
+               bsonType: "int"
+            }
+         }
+      }
+   }
+})
+
+2. Collection artists
+db.createCollection("artists", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "artist_id", "name", "popularity", "followers" ],
+         properties: {
+            artist_id: {
+               bsonType: "string"
+            },
+            name: {
+               bsonType: "string"
+            },
+            popularity: {
+               bsonType: "int"
+            },
+            followers: {
+               bsonType: "int"
+            }
+         }
+      }
+   }
+})
+
+
+3. Collection audio_features
+db.createCollection("audio_features", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "audio_feature_id", "acousticness", "danceability", "duration", "energy", "instrumentalness", "liveness", "loudness" ],
+         properties: {
+            audio_feature_id: {
+               bsonType: "string"
+            },
+            acousticness: {
+               bsonType: "decimal"
+            },
+            danceability: {
+               bsonType: "decimal"
+            },
+            duration: {
+               bsonType: "int"
+            },
+            energy: {
+               bsonType: "decimal"
+            },
+            instrumentalness: {
+               bsonType: "decimal"
+            },
+            liveness: {
+               bsonType: "decimal"
+            },
+            loudness: {
+               bsonType: "decimal"
+            }
+         }
+      }
+   }
+})
+
+
+4. Collection genres
+db.createCollection("genres", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "genre_id", "name" ],
+         properties: {
+            genre_id: {
+               bsonType: "int"
+            },
+            name: {
+               bsonType: "string"
+            }
+         }
+      }
+   }
+})
+
+
+5. Collection r_albums_artists
+db.createCollection("r_albums_artists", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "album_id", "artist_id" ],
+         properties: {
+            album_id: {
+               bsonType: "string"
+            },
+            artist_id: {
+               bsonType: "string"
+            }
+         }
+      }
+   }
+})
+
+
+6. Collection r_albums_tracks
+db.createCollection("r_albums_tracks", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "album_id", "track_id" ],
+         properties: {
+            album_id: {
+               bsonType: "string"
+            },
+            track_id: {
+               bsonType: "string"
+            }
+         }
+      }
+   }
+})
+
+
+7. Collection r_artist_genre
+db.createCollection("r_artist_genre", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "artist_id", "genre_id" ],
+         properties: {
+            artist_id: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            genre_id: {
+               bsonType: "int",
+               description: "must be an integer and is required"
+            }
+         }
+      }
+   }
+})
+
+
+8. Collection r_track_artist
+db.createCollection("r_track_artist", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "track_id", "artist_id" ],
+         properties: {
+            track_id: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            artist_id: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            }
+         }
+      }
+   }
+})
+
+9. Collection tracks
+db.createCollection("tracks", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "track_id", "name", "audio_feature_id", "popularity", "duration", "explicit", "isPlayable", "track_no" ],
+         properties: {
+            track_id: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            name: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            audio_feature_id: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            popularity: {
+               bsonType: "int",
+               description: "must be an integer and is required"
+            },
+            duration: {
+               bsonType: "int",
+               description: "must be an integer and is required"
+            },
+            explicit: {
+               bsonType: "bool",
+               description: "must be a boolean and is required"
+            },
+            isPlayable: {
+               bsonType: "bool",
+               description: "must be a boolean and is required"
+            },
+            track_no: {
+               bsonType: "int",
+               description: "must be an integer and is required"
+            }
+         }
+      }
+   }
+})
