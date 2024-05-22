@@ -14,4 +14,5 @@ Performed Preprocessing and Cleaning of the data
 Used Apriori Algorithm for generating Lattice Models using the frequent itemsets obtained from the itemset mining in the Relational Model
 
 Dataset: https://www.kaggle.com/datasets/rodolfofigueroa/spotify-12m-songs
+
 Tools and technologies used: PostgreSQL, MongoDB, PySpark, Datagrip, Python
