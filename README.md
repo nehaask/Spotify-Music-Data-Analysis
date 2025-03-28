@@ -1,6 +1,6 @@
 # 🎧 Spotify Music Data Analysis
 
-An end-to-end data analysis project on Spotify's massive dataset of 12 million songs using both Relational and Non-Relational Database Models. This project explores data modeling, normalization, preprocessing, and mining of association rules through frequent itemsets.
+A data analysis project on Spotify's massive dataset of 12 million songs using both Relational and Non-Relational Database Models. This project explores data modeling, normalization, preprocessing, and mining of association rules through frequent itemsets.
 
 ---
 
